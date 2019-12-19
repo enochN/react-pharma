@@ -21,10 +21,18 @@ function App({products, seed}) {
   console.log(products);
 
   return (
-    <div className="w-full h-screen bg-gray-100 p-10 container mx-auto">
+    <div className="w-full h-screen bg-white py-10 px-2 container mx-auto">
       {
-        products.map(product => <div key={product.id}>
-          <p className="text-lg text-gray-900 font-semibold tracking-wider">{product.name}</p>
+        products.map(product => <div key={product.id} className="bg-gray-100 shadow hover:shadow-md  mb-4 p-4">
+          <p className="text-lg text-gray-900 font-semibold tracking-wider mb-6">{product.name}</p>
+          <ul>
+            {product.prices.map(price => (
+                <li key={price.id} className="inline-flex px-10 align-middle justify-between w-full">
+                  <p> GHS {price.price}</p>
+                  <p>{new Date(price.date).toLocaleString()}</p>
+                </li>
+            ))}
+          </ul>
         </div>)
       }
     </div>
