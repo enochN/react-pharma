@@ -27,6 +27,17 @@ export default function products(state = initialState, action) {
                 ...state,
                 products
             };
+        case "ADD":
+            const {name, price} = action;
+            let productsA = state.products.concat({name, prices: [{id:1, price, date: new Date()}]});
+            productsA.map(prod => {
+                prod.prices.sort(sortProductPrices);
+                return prod;
+            });
+            return {
+                ...state,
+                products: productsA
+            };
         default:
             return state;
     }

@@ -3,6 +3,32 @@ import axios from 'axios';
 import './App.css';
 import './tailwind.css';
 import {connect} from "react-redux";
+import NewProductForm from "./NewProductForm";
+import * as PropTypes from "prop-types";
+
+
+function ProductCard(props) {
+    return <div className="bg-gray-100 shadow hover:shadow-md  mb-4 p-4">
+        <p className="text-lg text-gray-900 font-semibold tracking-wider mb-6">{props.product.name}</p>
+        <ul>
+            {props.product.prices.map(props.renderPrice)}
+        </ul>
+    </div>;
+}
+
+ProductCard.propTypes = {
+    product: PropTypes.any,
+    renderPrice: PropTypes.func
+};
+
+function ProductPrice(props) {
+    return <li className="inline-flex px-10 align-middle justify-between w-full">
+        <p> GHS {props.price.price}</p>
+        <p>{new Date(props.price.date).toLocaleString()}</p>
+    </li>;
+}
+
+ProductPrice.propTypes = {price: PropTypes.any};
 
 function App({products, seed}) {
 
@@ -22,19 +48,12 @@ function App({products, seed}) {
 
   return (
     <div className="w-full h-screen bg-white py-10 px-2 container mx-auto">
-      {
-        products.map(product => <div key={product.id} className="bg-gray-100 shadow hover:shadow-md  mb-4 p-4">
-          <p className="text-lg text-gray-900 font-semibold tracking-wider mb-6">{product.name}</p>
-          <ul>
-            {product.prices.map(price => (
-                <li key={price.id} className="inline-flex px-10 align-middle justify-between w-full">
-                  <p> GHS {price.price}</p>
-                  <p>{new Date(price.date).toLocaleString()}</p>
-                </li>
-            ))}
-          </ul>
-        </div>)
-      }
+        {
+            products.map(product => <ProductCard key={product.id} product={product} renderPrice={price => (
+                <ProductPrice key={price.id} price={price}/>
+            )}/>)
+        }
+        <NewProductForm />
     </div>
   );
 }
