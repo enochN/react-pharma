@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import axios from 'axios';
 import './App.css';
 import './tailwind.css';
@@ -30,7 +30,7 @@ function ProductPrice(props) {
 
 ProductPrice.propTypes = {price: PropTypes.any};
 
-function App({products, prices, seed}) {
+function App({products, seed}) {
 
     useEffect(() => {
         async function fetchData(){
@@ -42,18 +42,20 @@ function App({products, prices, seed}) {
         }
 
         fetchData();
-    },[]);
+    },[seed]);
 
     console.log(products);
 
     return (
         <div className="w-full h-screen bg-white py-10 px-2 container mx-auto">
+
+            <NewProductForm />
+
             {
                 products.map(product => <ProductCard key={product.id} product={product} renderPrice={price => (
                     <ProductPrice key={price.id} price={price}/>
                 )}/>)
             }
-            <NewProductForm />
         </div>
     );
 }

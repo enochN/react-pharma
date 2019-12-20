@@ -17,7 +17,7 @@ import {connect} from "react-redux";
          alert("Invalid data");
      };
 
-    return (<form onSubmit={validateThenSave} className="p-4 bg-gray-100 border-2 rounded">
+    return (<form onSubmit={validateThenSave} className="p-4 bg-gray-100 border-2 rounded mb-6">
         <div className="flex justify-start align-middle mb-4 flex-col">
             <label htmlFor="name" className="w-1/6 mb-2">Name </label>
             <input name="name" value={name} onChange={e => setName(e.target.value)} type="text" placeholder="Type the name"
