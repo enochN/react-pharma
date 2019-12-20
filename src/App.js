@@ -34,7 +34,7 @@ function App({products, seed}) {
 
     useEffect(() => {
         async function fetchData(){
-            let response = await axios.get('http://www.mocky.io/v2/5c3e15e63500006e003e9795');
+            let response = await axios.get('https://www.mocky.io/v2/5c3e15e63500006e003e9795');
             console.log(response.data);
             const { data: {products}} = response;
 
