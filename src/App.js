@@ -30,35 +30,41 @@ function ProductPrice(props) {
 
 ProductPrice.propTypes = {price: PropTypes.any};
 
-function App({products, seed}) {
+function App({products, prices, seed}) {
 
-  useEffect(() => {
-    async function fetchData(){
-      let response = await axios.get('http://www.mocky.io/v2/5c3e15e63500006e003e9795');
-      console.log(response.data);
-      const { data: {products}} = response;
+    useEffect(() => {
+        async function fetchData(){
+            let response = await axios.get('http://www.mocky.io/v2/5c3e15e63500006e003e9795');
+            console.log(response.data);
+            const { data: {products}} = response;
 
-      seed(products);
-    }
-
-    fetchData();
-  },[]);
-
-  console.log(products);
-
-  return (
-    <div className="w-full h-screen bg-white py-10 px-2 container mx-auto">
-        {
-            products.map(product => <ProductCard key={product.id} product={product} renderPrice={price => (
-                <ProductPrice key={price.id} price={price}/>
-            )}/>)
+            seed(products);
         }
-        <NewProductForm />
-    </div>
-  );
+
+        fetchData();
+    },[]);
+
+    console.log(products);
+
+    return (
+        <div className="w-full h-screen bg-white py-10 px-2 container mx-auto">
+            {
+                products.map(product => <ProductCard key={product.id} product={product} renderPrice={price => (
+                    <ProductPrice key={price.id} price={price}/>
+                )}/>)
+            }
+            <NewProductForm />
+        </div>
+    );
 }
 
-const mapStateToProps = (state) => ({products: state.products.products});
+const mapStateToProps = (state) => {
+    console.log(state.products);
+    return {products: state.products.products.map(prod => {
+            prod["prices"] = state.products.prices.filter(price => price.productId === prod.id);
+            return prod;
+        })}
+};
 
 const mapDispatchToProps = (dispatch) => ({seed: (data) => dispatch({type:"INIT", data})});
 

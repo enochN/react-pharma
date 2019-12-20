@@ -25,7 +25,7 @@ import {connect} from "react-redux";
         </div>
         <div className="flex justify-start align-middle flex-col">
             <label htmlFor="price" className="w-1/6 mb-2">Price </label>
-            <input name="price" value={price} step=".01" onChange={e => setPrice(e.target.value)} type="number" placeholder="Set the price"
+            <input name="price" value={price} min="0" step=".01" onChange={e => setPrice(e.target.value)} type="number" placeholder="Set the price"
                    className="p-2 border-blue-200 shadow-outline rounded"/>
         </div>
         <button type="submit"

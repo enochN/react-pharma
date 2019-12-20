@@ -1,5 +1,6 @@
 const initialState = {
-    products: []
+    products: [],
+    prices:[]
 };
 
 function sortProductPrices(a,b) {
@@ -18,25 +19,30 @@ function sortProductPrices(a,b) {
 export default function products(state = initialState, action) {
     switch (action.type) {
         case "INIT":
+            let prices = [];
             let products = action.data.map(prod => {
-                prod.prices.sort(sortProductPrices);
-                return prod;
+                prices = prices.concat(prod.prices.map(price => ({id:price.id, price: price.price, date: price.date, productId: prod.id})));
+                return {id: Number(prod.id), name: prod.name};
             });
 
-            return {
+            prices.sort(sortProductPrices);
+            const finalState = {
                 ...state,
-                products
+                products,
+                prices
             };
+            console.log("finalState", finalState);
+            return finalState;
         case "ADD":
             const {name, price} = action;
-            let productsA = state.products.concat({name, prices: [{id:1, price, date: new Date()}]});
-            productsA.map(prod => {
-                prod.prices.sort(sortProductPrices);
-                return prod;
-            });
+            console.log(state);
+            let newProductId = Math.max(...state.products.map(p => p.id)) + 1;
+            let updatedProducts = state.products.concat([{id: newProductId, name}]);
+            let updatedPrices = state.prices.concat([{price, date: new Date(), id: 1, productId: newProductId }]);
             return {
                 ...state,
-                products: productsA
+                products: updatedProducts,
+                prices: updatedPrices
             };
         default:
             return state;
